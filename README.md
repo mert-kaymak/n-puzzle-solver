@@ -1,86 +1,123 @@
-# N-Puzzle Solver
+# 🧩 N-Puzzle Solver
 
-A Python-based N-Puzzle solver implementing four classic search algorithms with an interactive Tkinter GUI. Developed as Assignment #1 for the Artificial Intelligence course.
+An interactive N-Puzzle solver implementing and comparing four classic AI search algorithms: **BFS, DFS, IDS, and A\***.  
+Built with Python and a Tkinter GUI for step-by-step visualization.
 
-## Algorithms Implemented
+> 📌 AI Course — Assignment | Konya Food & Agriculture University, 2025–2026
 
-| Algorithm | Optimal? | Complete? | Space Complexity |
-|-----------|----------|-----------|-----------------|
-| BFS (Breadth-First Search) | ✅ Yes | ✅ Yes | O(b^d) |
-| DFS (Depth-First Search) | ❌ No | ✅ Yes (with depth cap) | O(b·d) |
-| IDS (Iterative Deepening Search) | ✅ Yes | ✅ Yes | O(b·d) |
-| A* — Misplaced Tiles | ✅ Yes | ✅ Yes | O(b^d) |
-| A* — Manhattan Distance | ✅ Yes | ✅ Yes | O(b^d) |
+---
 
-## Performance Comparison
+## 📌 Overview
 
-All results on the same start state: `[[2,3,5],[0,7,8],[6,1,4]]` → goal: `[[1,2,3],[4,5,6],[7,8,0]]`
+The N-Puzzle (sliding tile puzzle) is a classic AI problem. This project solves it using four search strategies, compares their performance, and provides a visual GUI to replay solutions step by step.
 
-| Algorithm | Nodes Expanded | Moves | Time (s) |
-|-----------|---------------|-------|----------|
-| BFS | 18,344 | 17 | 0.392 |
-| DFS (depth cap 100) | 24,046 | 97 | 0.301 |
-| IDS | 97,425 | 17 | 0.990 |
-| A* Misplaced Tiles | 847 | 17 | 0.007 |
-| A* Manhattan Distance | 67 | 17 | 0.0006 |
+---
 
-> A* with Manhattan Distance is **640x faster** than BFS while still finding the optimal solution.
+## ✨ Features
 
-## Features
+- **4 Search Algorithms** — BFS, DFS (with depth cap), IDS, A* (Misplaced Tiles & Manhattan Distance)
+- **Interactive GUI** — Tkinter-based interface with step-by-step and animated playback
+- **Real-time Stats** — Nodes expanded, moves, and elapsed time displayed live
+- **Configurable Board** — Supports any N×N puzzle size (3×3, 5×5, etc.)
+- **Random State Generator** — Generates solvable configurations using Fisher-Yates shuffle
+- **File Input** — Load custom puzzle states from `.txt` files
 
-- Interactive GUI built with Tkinter
-- Step-by-step solution navigation (forward and backward)
-- Free-run animation mode with pause/cancel
-- Random solvable state generator
-- Load puzzle state from .txt file
-- Visual highlighting of correctly placed tiles
-- Real-time stats: nodes expanded, moves, elapsed time
-- Supports any NxN puzzle size (tested up to 7x7)
+---
 
-## Project Structure
+## 🛠️ Tech Stack
 
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Tkinter](https://img.shields.io/badge/Tkinter-GUI-blue?style=flat-square)
+
+| File | Description |
+|------|-------------|
+| `main.py` | Entry point — launches the GUI |
+| `puzzle.py` | `PuzzleState` class, state representation, successor generation |
+| `algorithms.py` | BFS, DFS, IDS, A* implementations |
+| `gui.py` | Tkinter GUI — visualization and controls |
+| `run_experiments.py` | Automated benchmark experiments across puzzle sizes |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.8+
+- No external libraries required (uses only Python standard library)
+
+### Run
+
+**Windows:**
+```bash
+calistir.bat
 ```
-main.py              --> Entry point, launches the GUI
-puzzle.py            --> PuzzleState class, successor generation
-algorithms.py        --> BFS, DFS, IDS, A* implementations
-gui.py               --> Tkinter GUI
-run_experiments.py   --> Runs all algorithm comparisons
-sample_state.txt     --> Example start state
+
+**Linux / macOS:**
+```bash
+bash calistir.sh
 ```
 
-## How to Run
-
-Requirements: Python 3.8 or higher, Tkinter (comes with Python)
-
-```
+**Or directly:**
+```bash
 python main.py
 ```
 
-To run algorithm comparison experiments:
+### Load a Custom State
 
+Create a `.txt` file with space-separated tile values (0 = blank):
 ```
-python run_experiments.py
+2 3 5
+0 7 8
+6 1 4
 ```
+Then use **"Load from File"** in the GUI.
 
-If Tkinter is missing on Linux:
+---
 
-```
-sudo apt-get install python3-tk
-```
+## 📊 Algorithm Comparison
 
-## Scalability
+All results on the same start state: `[[2,3,5],[0,7,8],[6,1,4]]` → goal: `[[1,2,3],[4,5,6],[7,8,0]]`
 
-| Puzzle Size | Tiles | Nodes Expanded | Time (s) |
-|-------------|-------|----------------|----------|
-| 3x3 | 8 | 2,242 | 0.096 |
-| 5x5 | 24 | 8,267 | 0.589 |
-| 7x7 | 48 | 100,000+ | 30+ |
+| Algorithm | Nodes Expanded | Moves | Time (s) | Optimal? |
+|-----------|---------------|-------|----------|----------|
+| BFS | 18,344 | 17 | 0.392 | ✅ Yes |
+| DFS (depth cap 100) | 24,046 | 97 | 0.301 | ❌ No |
+| IDS | 97,425 | 17 | 0.990 | ✅ Yes |
+| A\* – Misplaced Tiles | 847 | 17 | 0.00738 | ✅ Yes |
+| A\* – Manhattan Distance | **67** | 17 | **0.000613** | ✅ Yes (best) |
 
-## Team
+> **Key insight:** A\* with Manhattan Distance is **640× faster than BFS** and **1,613× faster than IDS** while still finding the optimal 17-move solution. The heuristic quality is the dominant factor in A\* performance.
 
-- Mert KAYMAK
-- Ahmet Alperen ARSLAN
-- Utkan Onur ÖZBEDEL
+---
 
-Konya Food and Agriculture University — Computer Engineering
-Artificial Intelligence Course — Spring 2026
+## 🔬 Scalability Experiment
+
+A\* (Manhattan) was tested across different puzzle sizes:
+
+| Size | Tiles | Nodes Expanded | Optimal Moves | Time (s) |
+|------|-------|---------------|---------------|----------|
+| 3×3 | 8 | 2,242 | 24 | 0.096 |
+| 5×5 | 24 | 8,267 | 32 | 0.589 |
+| 7×7 | 48 | 100,000+ | — | > 30s |
+
+The 7×7 puzzle becomes intractable for plain A\* due to state space explosion — the solvable state count jumps from ~181,440 (3×3) to ~7.75 × 10²³ (5×5).
+
+---
+
+## 🧠 Algorithm Notes
+
+**BFS** — Optimal and complete, but memory-intensive (stores entire frontier).  
+**DFS** — Fast but non-optimal; requires depth cap to avoid infinite loops.  
+**IDS** — Combines BFS optimality with DFS memory efficiency; re-expands nodes at each depth.  
+**A\*** — Best performance with a good heuristic. Manhattan distance dominates Misplaced Tiles because it accounts for distance, not just position.
+
+---
+
+## 👥 Team
+
+| Name | Role |
+|------|------|
+| **Mert Kaymak** | Algorithm implementation, state representation, experiments |
+| **Ahmet Alperen Arslan** | GUI development, project structure |
+| **Utkan Onur Özbedel** | Testing, documentation, report |
